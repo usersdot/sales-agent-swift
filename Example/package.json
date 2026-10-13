@@ -1,0 +1,9 @@
+{
+  "name": "sales-agent-ios-example-mock",
+  "private": true,
+  "description": "Örnek uygulamanın mock sunucusu (bağımlılık yok, yalnızca Node)",
+  "scripts": {
+    "mock": "node mock/server.js",
+    "cmd": "node mock/cmd.js"
+  }
+}

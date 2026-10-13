@@ -1,0 +1,180 @@
+[
+  {
+    "id": "1556424",
+    "mainProductId": "YTS1556428",
+    "name": "Frio Full Kenar Sıvı Geçirmez Alez",
+    "brand": "Yataş Bedding",
+    "price": 1299.9,
+    "discountedPrice": 1199.9,
+    "currency": "TRY",
+    "url": "https://www.yatasbedding.com.tr/tr/frio-p-1556424",
+    "image": "https://p1-img-yatas.mncdn.com/mnresize/600/600/YTS1556428_d_image_1.jpg",
+    "stock": "in_stock",
+    "categories": [
+      "Yastık & Yorgan",
+      "Alez & Uyku Pedi"
+    ],
+    "description": "Sıvı geçirmez, nefes alabilen yüzeyli full kenar alez. Yatağı sıvı ve lekelere karşı korur; lastikli kenarları yatağa tam oturur. 30°C yıkanabilir.",
+    "attributes": {
+      "Boyut": "160X200 cm",
+      "Renk": "Beyaz"
+    },
+    "variants": [
+      {
+        "id": "1556422",
+        "label": "200X200 cm · Beyaz",
+        "url": "https://www.yatasbedding.com.tr/tr/frio-p-1556422",
+        "price": 1399.9,
+        "stock": "in_stock",
+        "options": {
+          "Boyut": "200X200 cm",
+          "Renk": "Beyaz"
+        }
+      },
+      {
+        "id": "1556424",
+        "label": "160X200 cm · Beyaz",
+        "url": "https://www.yatasbedding.com.tr/tr/frio-p-1556424",
+        "price": 1299.9,
+        "stock": "in_stock",
+        "options": {
+          "Boyut": "160X200 cm",
+          "Renk": "Beyaz"
+        },
+        "discountedPrice": 1199.9
+      },
+      {
+        "id": "1556426",
+        "label": "180X200 cm · Beyaz",
+        "url": "https://www.yatasbedding.com.tr/tr/frio-p-1556426",
+        "price": 1299.9,
+        "stock": "in_stock",
+        "options": {
+          "Boyut": "180X200 cm",
+          "Renk": "Beyaz"
+        }
+      },
+      {
+        "id": "1556428",
+        "label": "90X190 cm · Beyaz",
+        "url": "https://www.yatasbedding.com.tr/tr/frio-p-1556428",
+        "price": 899.9,
+        "stock": "in_stock",
+        "options": {
+          "Boyut": "90X190 cm",
+          "Renk": "Beyaz"
+        }
+      },
+      {
+        "id": "1556432",
+        "label": "100X200 cm · Beyaz",
+        "url": "https://www.yatasbedding.com.tr/tr/frio-p-1556432",
+        "price": 949.9,
+        "stock": "in_stock",
+        "options": {
+          "Boyut": "100X200 cm",
+          "Renk": "Beyaz"
+        }
+      },
+      {
+        "id": "1556434",
+        "label": "120X200 cm · Beyaz",
+        "url": "https://www.yatasbedding.com.tr/tr/frio-p-1556434",
+        "price": 999.9,
+        "stock": "in_stock",
+        "options": {
+          "Boyut": "120X200 cm",
+          "Renk": "Beyaz"
+        }
+      }
+    ]
+  },
+  {
+    "id": "1098542",
+    "mainProductId": "YTS189463",
+    "name": "Standart Alez",
+    "brand": "Yataş Bedding",
+    "price": 929.9,
+    "currency": "TRY",
+    "url": "https://www.yatasbedding.com.tr/tr/standart-p-1098542",
+    "image": "https://p1-img-yatas.mncdn.com/mnresize/600/600/YTS189463_d_image_1.jpg",
+    "stock": "out_of_stock",
+    "categories": [
+      "Yastık & Yorgan",
+      "Alez & Uyku Pedi"
+    ],
+    "description": "Pamuklu yüzeyli standart alez. Yatağınızı terden ve lekelerden korur, köşe lastikleriyle kaymaz. 40°C yıkanabilir.",
+    "attributes": {
+      "Boyut": "200X220 cm",
+      "Renk": "Beyaz"
+    },
+    "variants": [
+      {
+        "id": "1098542",
+        "label": "200X220 cm · Beyaz",
+        "url": "https://www.yatasbedding.com.tr/tr/standart-p-1098542",
+        "price": 929.9,
+        "stock": "out_of_stock",
+        "options": {
+          "Boyut": "200X220 cm",
+          "Renk": "Beyaz"
+        }
+      },
+      {
+        "id": "147870",
+        "label": "130X200 cm · Beyaz",
+        "url": "https://www.yatasbedding.com.tr/tr/standart-p-147870",
+        "price": 849.9,
+        "stock": "out_of_stock",
+        "options": {
+          "Boyut": "130X200 cm",
+          "Renk": "Beyaz"
+        }
+      },
+      {
+        "id": "160789",
+        "label": "100X190 cm · Beyaz",
+        "url": "https://www.yatasbedding.com.tr/tr/standart-p-160789",
+        "price": 829.9,
+        "stock": "out_of_stock",
+        "options": {
+          "Boyut": "100X190 cm",
+          "Renk": "Beyaz"
+        }
+      },
+      {
+        "id": "189463",
+        "label": "80x190 cm · Beyaz",
+        "url": "https://www.yatasbedding.com.tr/tr/standart-p-189463",
+        "price": 599.9,
+        "stock": "in_stock",
+        "options": {
+          "Boyut": "80x190 cm",
+          "Renk": "Beyaz"
+        }
+      },
+      {
+        "id": "70060",
+        "label": "100X200 cm · Beyaz",
+        "url": "https://www.yatasbedding.com.tr/tr/standart-p-70060",
+        "price": 829.9,
+        "stock": "in_stock",
+        "options": {
+          "Boyut": "100X200 cm",
+          "Renk": "Beyaz"
+        }
+      },
+      {
+        "id": "70062",
+        "label": "130X190 cm · Beyaz",
+        "url": "https://www.yatasbedding.com.tr/tr/standart-p-70062",
+        "price": 849.9,
+        "stock": "in_stock",
+        "options": {
+          "Boyut": "130X190 cm",
+          "Renk": "Beyaz"
+        }
+      }
+    ]
+  }
+]

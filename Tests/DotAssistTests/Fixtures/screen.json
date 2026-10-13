@@ -1,0 +1,460 @@
+{
+  "origin": "https://www.ornek.com",
+  "cases": [
+    {
+      "name": "ürün ekranı, web adresiyle",
+      "screen": {
+        "type": "product",
+        "product": {
+          "id": "42",
+          "name": "Kalem",
+          "url": "https://www.ornek.com/kalem-p-42",
+          "price": 1199.9,
+          "attributes": {
+            "Renk": "Mavi"
+          },
+          "badge": "yeni"
+        },
+        "title": "Kalem"
+      },
+      "order": null,
+      "cart": null,
+      "user": null,
+      "expect": {
+        "state": {
+          "pageType": "product",
+          "cart": null,
+          "user": {
+            "loggedIn": false
+          },
+          "title": "Kalem",
+          "product": {
+            "id": "42",
+            "name": "Kalem",
+            "url": "https://www.ornek.com/kalem-p-42",
+            "price": 1199.9,
+            "attributes": {
+              "Renk": "Mavi"
+            },
+            "badge": "yeni"
+          }
+        },
+        "url": "https://www.ornek.com/kalem-p-42",
+        "identity": null
+      }
+    },
+    {
+      "name": "ürün ekranı, adressiz — /__app yolu",
+      "screen": {
+        "type": "product",
+        "product": {
+          "id": "a b"
+        }
+      },
+      "order": null,
+      "cart": null,
+      "user": null,
+      "expect": {
+        "state": {
+          "pageType": "product",
+          "cart": null,
+          "user": {
+            "loggedIn": false
+          },
+          "product": {
+            "id": "a b"
+          }
+        },
+        "url": "https://www.ornek.com/__app/product/a%20b",
+        "identity": null
+      }
+    },
+    {
+      "name": "kimlikte özel karakterler — encodeURIComponent",
+      "screen": {
+        "type": "product",
+        "product": {
+          "id": "x!*'(),/?ğ"
+        }
+      },
+      "order": null,
+      "cart": null,
+      "user": null,
+      "expect": {
+        "state": {
+          "pageType": "product",
+          "cart": null,
+          "user": {
+            "loggedIn": false
+          },
+          "product": {
+            "id": "x!*'(),/?ğ"
+          }
+        },
+        "url": "https://www.ornek.com/__app/product/x!*'()%2C%2F%3F%C4%9F",
+        "identity": null
+      }
+    },
+    {
+      "name": "kategori + sepet",
+      "screen": {
+        "type": "category",
+        "category": {
+          "categoryRef": "ev/mutfak",
+          "items": [
+            {
+              "id": "1",
+              "position": 1
+            }
+          ]
+        }
+      },
+      "order": null,
+      "cart": {
+        "total": 5,
+        "itemCount": 2,
+        "currency": "TRY"
+      },
+      "user": null,
+      "expect": {
+        "state": {
+          "pageType": "category",
+          "cart": {
+            "total": 5,
+            "itemCount": 2,
+            "currency": "TRY"
+          },
+          "user": {
+            "loggedIn": false
+          },
+          "category": {
+            "categoryRef": "ev/mutfak",
+            "items": [
+              {
+                "id": "1",
+                "position": 1
+              }
+            ]
+          }
+        },
+        "url": "https://www.ornek.com/__app/category/ev%2Fmutfak",
+        "identity": null
+      }
+    },
+    {
+      "name": "kategori, web adresiyle",
+      "screen": {
+        "type": "category",
+        "category": {
+          "categoryRef": "ev",
+          "url": "https://www.ornek.com/ev"
+        }
+      },
+      "order": null,
+      "cart": null,
+      "user": null,
+      "expect": {
+        "state": {
+          "pageType": "category",
+          "cart": null,
+          "user": {
+            "loggedIn": false
+          },
+          "category": {
+            "categoryRef": "ev",
+            "url": "https://www.ornek.com/ev"
+          }
+        },
+        "url": "https://www.ornek.com/ev",
+        "identity": null
+      }
+    },
+    {
+      "name": "arama",
+      "screen": {
+        "type": "search",
+        "search": {
+          "query": "mavi gömlek",
+          "resultCount": 12
+        }
+      },
+      "order": null,
+      "cart": null,
+      "user": null,
+      "expect": {
+        "state": {
+          "pageType": "search",
+          "cart": null,
+          "user": {
+            "loggedIn": false
+          },
+          "search": {
+            "query": "mavi gömlek",
+            "resultCount": 12
+          }
+        },
+        "url": "https://www.ornek.com/__app/search?q=mavi%20g%C3%B6mlek",
+        "identity": null
+      }
+    },
+    {
+      "name": "sepet",
+      "screen": {
+        "type": "cart"
+      },
+      "order": null,
+      "cart": null,
+      "user": null,
+      "expect": {
+        "state": {
+          "pageType": "cart",
+          "cart": null,
+          "user": {
+            "loggedIn": false
+          }
+        },
+        "url": "https://www.ornek.com/__app/cart",
+        "identity": null
+      }
+    },
+    {
+      "name": "hesap",
+      "screen": {
+        "type": "account"
+      },
+      "order": null,
+      "cart": null,
+      "user": null,
+      "expect": {
+        "state": {
+          "pageType": "account",
+          "cart": null,
+          "user": {
+            "loggedIn": false
+          }
+        },
+        "url": "https://www.ornek.com/__app/account",
+        "identity": null
+      }
+    },
+    {
+      "name": "ana sayfa",
+      "screen": {
+        "type": "home"
+      },
+      "order": null,
+      "cart": null,
+      "user": null,
+      "expect": {
+        "state": {
+          "pageType": "home",
+          "cart": null,
+          "user": {
+            "loggedIn": false
+          }
+        },
+        "url": "https://www.ornek.com/",
+        "identity": null
+      }
+    },
+    {
+      "name": "diğer, adlı",
+      "screen": {
+        "type": "other",
+        "name": "kampanya sayfası"
+      },
+      "order": null,
+      "cart": null,
+      "user": null,
+      "expect": {
+        "state": {
+          "pageType": "other",
+          "cart": null,
+          "user": {
+            "loggedIn": false
+          }
+        },
+        "url": "https://www.ornek.com/__app/kampanya%20sayfas%C4%B1",
+        "identity": null
+      }
+    },
+    {
+      "name": "diğer, adsız",
+      "screen": {
+        "type": "other"
+      },
+      "order": null,
+      "cart": null,
+      "user": null,
+      "expect": {
+        "state": {
+          "pageType": "other",
+          "cart": null,
+          "user": {
+            "loggedIn": false
+          }
+        },
+        "url": "https://www.ornek.com/__app/other",
+        "identity": null
+      }
+    },
+    {
+      "name": "ekranın kendi adresi önce gelir",
+      "screen": {
+        "type": "cart",
+        "url": "https://www.ornek.com/sepet"
+      },
+      "order": null,
+      "cart": null,
+      "user": null,
+      "expect": {
+        "state": {
+          "pageType": "cart",
+          "cart": null,
+          "user": {
+            "loggedIn": false
+          }
+        },
+        "url": "https://www.ornek.com/sepet",
+        "identity": null
+      }
+    },
+    {
+      "name": "ekran yok",
+      "screen": null,
+      "order": null,
+      "cart": null,
+      "user": null,
+      "expect": {
+        "state": {
+          "pageType": "other",
+          "cart": null,
+          "user": {
+            "loggedIn": false
+          }
+        },
+        "url": "https://www.ornek.com/",
+        "identity": null
+      }
+    },
+    {
+      "name": "sipariş ürünün önüne geçer",
+      "screen": {
+        "type": "product",
+        "product": {
+          "id": "42",
+          "name": "Kalem",
+          "url": "https://www.ornek.com/kalem-p-42",
+          "price": 1199.9,
+          "attributes": {
+            "Renk": "Mavi"
+          },
+          "badge": "yeni"
+        }
+      },
+      "order": {
+        "orderId": "S-1",
+        "total": 10,
+        "productIds": [
+          "42"
+        ]
+      },
+      "cart": null,
+      "user": null,
+      "expect": {
+        "state": {
+          "pageType": "checkout",
+          "cart": null,
+          "user": {
+            "loggedIn": false
+          },
+          "order": {
+            "orderId": "S-1",
+            "total": 10,
+            "productIds": [
+              "42"
+            ]
+          }
+        },
+        "url": "https://www.ornek.com/__app/checkout/S-1",
+        "identity": null
+      }
+    },
+    {
+      "name": "imzalı üye",
+      "screen": {
+        "type": "home"
+      },
+      "order": null,
+      "cart": null,
+      "user": {
+        "ref": "u1",
+        "exp": 2000000000,
+        "sig": "abc",
+        "user": {
+          "name": "Ayşe"
+        }
+      },
+      "expect": {
+        "state": {
+          "pageType": "home",
+          "cart": null,
+          "user": {
+            "loggedIn": true
+          }
+        },
+        "url": "https://www.ornek.com/",
+        "identity": {
+          "ref": "u1",
+          "exp": 2000000000,
+          "sig": "abc",
+          "user": {
+            "name": "Ayşe"
+          }
+        }
+      }
+    },
+    {
+      "name": "imzasız üye — kimlik gönderilmez",
+      "screen": {
+        "type": "home"
+      },
+      "order": null,
+      "cart": null,
+      "user": {
+        "ref": "u1",
+        "exp": 0,
+        "sig": ""
+      },
+      "expect": {
+        "state": {
+          "pageType": "home",
+          "cart": null,
+          "user": {
+            "loggedIn": false
+          }
+        },
+        "url": "https://www.ornek.com/",
+        "identity": null
+      }
+    }
+  ],
+  "origins": [
+    [
+      "www.Ornek.com",
+      "https://www.ornek.com"
+    ],
+    [
+      "https://www.ornek.com/urun?a=1",
+      "https://www.ornek.com"
+    ],
+    [
+      "http://localhost:4185/",
+      "http://localhost:4185"
+    ],
+    [
+      "  shop.ornek.com.tr  ",
+      "https://shop.ornek.com.tr"
+    ]
+  ]
+}

@@ -1,0 +1,285 @@
+{
+  "v": 1,
+  "slug": "assistant",
+  "enabled": true,
+  "mode": "production",
+  "type": "assistant",
+  "renderMode": "popup",
+  "embed": {
+    "selector": "",
+    "mobileSelector": "",
+    "position": "append",
+    "timeoutMs": 8000,
+    "onSelectorMissing": "popup",
+    "fluidWidth": true,
+    "height": 520
+  },
+  "hostAuthorized": true,
+  "bundle": {
+    "url": "",
+    "integrity": null,
+    "prefetch": false
+  },
+  "targeting": {
+    "platforms": [
+      "all"
+    ],
+    "audience": "any",
+    "onUnknownAuth": "allow",
+    "pageTypes": [],
+    "allowInIframe": true,
+    "url": {
+      "include": [],
+      "exclude": []
+    },
+    "schedule": null,
+    "frequency": {
+      "maxPerSession": 0,
+      "maxPerDay": 0,
+      "cooldownHours": 0,
+      "closedSuppressHours": 0
+    }
+  },
+  "resolvers": {
+    "platform": "default",
+    "pageType": {
+      "rules": [],
+      "default": "other",
+      "waitFor": {
+        "source": "globalPath",
+        "from": "dataLayer",
+        "timeoutMs": 2000,
+        "pollMs": 100
+      },
+      "snippet": null,
+      "snippetHash": null
+    },
+    "auth": {
+      "rules": [],
+      "default": "logged-out",
+      "waitFor": null,
+      "snippet": null,
+      "snippetHash": null
+    }
+  },
+  "variables": {},
+  "snippets": {},
+  "allowSnippets": false,
+  "customScript": "",
+  "commerce": {
+    "mode": "click",
+    "addButtonSelector": "",
+    "baseUrl": "",
+    "entriesPath": "",
+    "userId": "anonymous",
+    "cartId": "",
+    "cartIdSource": null,
+    "lang": "tr",
+    "curr": "TRY",
+    "withCredentials": false,
+    "timeoutMs": 8000
+  },
+  "favorites": {
+    "enabled": true
+  },
+  "triggers": [
+    {
+      "type": "domready"
+    }
+  ],
+  "triggerMode": "any",
+  "autoOpen": false,
+  "theme": {
+    "launcher": {
+      "size": "xl",
+      "shape": "circle",
+      "showBadge": true
+    },
+    "brandColor": "#131E29",
+    "panelStyle": "drawer",
+    "panelWidth": 480,
+    "panelHeight": 100,
+    "panelHeightUnit": "%",
+    "userBubbleColor": "#131E29"
+  },
+  "customCss": "",
+  "pageCss": "",
+  "widgets": [
+    {
+      "type": "assistant",
+      "slug": "assistant",
+      "version": 3,
+      "renderMode": "popup",
+      "mode": "production",
+      "enabled": true,
+      "embed": {
+        "selector": "",
+        "mobileSelector": "",
+        "position": "append",
+        "timeoutMs": 8000,
+        "onSelectorMissing": "popup",
+        "fluidWidth": true,
+        "height": 520
+      },
+      "targeting": {
+        "platforms": [
+          "all"
+        ],
+        "audience": "any",
+        "onUnknownAuth": "allow",
+        "pageTypes": [],
+        "allowInIframe": true,
+        "url": {
+          "include": [],
+          "exclude": []
+        },
+        "schedule": null,
+        "frequency": {
+          "maxPerSession": 0,
+          "maxPerDay": 0,
+          "cooldownHours": 0,
+          "closedSuppressHours": 0
+        }
+      },
+      "triggers": [
+        {
+          "type": "domready"
+        }
+      ],
+      "triggerMode": "any",
+      "autoOpen": false,
+      "theme": {
+        "launcher": {
+          "size": "xl",
+          "shape": "circle",
+          "showBadge": true
+        },
+        "brandColor": "#131E29",
+        "panelStyle": "drawer",
+        "panelWidth": 480,
+        "panelHeight": 100,
+        "panelHeightUnit": "%",
+        "userBubbleColor": "#131E29"
+      },
+      "customCss": "",
+      "pageCss": "",
+      "strings": {
+        "locale": "tr",
+        "dir": "ltr",
+        "_title": "Yataş Asistanına sor",
+        "subtitle": "Uyku ürünleri hakkındaki sorularını yanıtlayalım",
+        "emptyState": "Uyku ürünleri hakkındaki sorularını yanıtlayalım",
+        "panelTitle": "Yataş Asistanı",
+        "_launcherLabel": "Yataş Asistanına sor",
+        "welcomeMessage": "Merhaba! Ben Yataş Bedding asistanıyım. Yatak, yastık, alez ya da nevresim — sana en uygun ürünü bulmana nasıl yardımcı olabilirim?",
+        "welcomeMessageUser": "Merhaba {name}! Ben Yataş Bedding asistanıyım. Sana en uygun ürünü bulmana nasıl yardımcı olabilirim?"
+      },
+      "qa": {
+        "suggestedQuestions": [
+          "Sırt ağrısı için yatak öner",
+          "Sıvı geçirmez alez var mı?",
+          "İndirimli yastıkları göster"
+        ],
+        "productSuggestedQuestions": [
+          "Ürünün özelliklerini anlat",
+          "Hangi ölçüleri var?",
+          "Nasıl yıkanır?",
+          "Benzer ürünleri göster"
+        ],
+        "showPrice": true,
+        "feedback": {
+          "enabled": true
+        },
+        "chatMode": "multi",
+        "newChatOnPageChange": false
+      },
+      "commerce": {
+        "mode": "click",
+        "addButtonSelector": "",
+        "baseUrl": "",
+        "entriesPath": "",
+        "userId": "anonymous",
+        "cartId": "",
+        "cartIdSource": null,
+        "lang": "tr",
+        "curr": "TRY",
+        "withCredentials": false,
+        "timeoutMs": 8000
+      },
+      "favorites": {
+        "enabled": true
+      },
+      "assets": {
+        "baseUrl": "",
+        "launcherIcon": null,
+        "avatar": null,
+        "logo": null,
+        "fallbackAvatar": null,
+        "preload": []
+      }
+    }
+  ],
+  "assets": {
+    "baseUrl": "",
+    "launcherIcon": null,
+    "avatar": null,
+    "logo": null,
+    "fallbackAvatar": null,
+    "preload": []
+  },
+  "qa": {
+    "streaming": false,
+    "input": {
+      "minLength": 3,
+      "maxLength": 500,
+      "multiline": true
+    },
+    "cooldownMs": 2000,
+    "requestTimeoutMs": 120000,
+    "historyPersist": true,
+    "historyMaxMessages": 50,
+    "honeypot": {
+      "enabled": true,
+      "fieldName": "wdgt_hp",
+      "minFillMs": 1200
+    },
+    "suggestedQuestions": [
+      "Sırt ağrısı için yatak öner",
+      "Sıvı geçirmez alez var mı?",
+      "İndirimli yastıkları göster"
+    ],
+    "productSuggestedQuestions": [
+      "Ürünün özelliklerini anlat",
+      "Hangi ölçüleri var?",
+      "Nasıl yıkanır?",
+      "Benzer ürünleri göster"
+    ],
+    "showPrice": true,
+    "feedback": {
+      "enabled": true
+    },
+    "chatMode": "multi",
+    "newChatOnPageChange": false
+  },
+  "strings": {
+    "locale": "tr",
+    "dir": "ltr",
+    "_title": "Yataş Asistanına sor",
+    "subtitle": "Uyku ürünleri hakkındaki sorularını yanıtlayalım",
+    "emptyState": "Uyku ürünleri hakkındaki sorularını yanıtlayalım",
+    "panelTitle": "Yataş Asistanı",
+    "_launcherLabel": "Yataş Asistanına sor",
+    "welcomeMessage": "Merhaba! Ben Yataş Bedding asistanıyım. Yatak, yastık, alez ya da nevresim — sana en uygun ürünü bulmana nasıl yardımcı olabilirim?",
+    "welcomeMessageUser": "Merhaba {name}! Ben Yataş Bedding asistanıyım. Sana en uygun ürünü bulmana nasıl yardımcı olabilirim?"
+  },
+  "analytics": {
+    "enabled": true,
+    "batch": {
+      "maxSize": 20,
+      "maxWaitMs": 5000
+    },
+    "sampleRate": 1,
+    "respectDnt": false
+  },
+  "_mock": "YEDEK CONFIG — canlı Yataş config ORIGIN_NOT_ALLOWED döndüğünde mock sunucu bunu verir. Alan adı panelde izinli olunca gerçek config kullanılır."
+}
