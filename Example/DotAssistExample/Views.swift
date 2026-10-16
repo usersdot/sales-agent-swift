@@ -135,7 +135,7 @@ struct ProductView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { CartButton() }
-        // YALNIZCA KİMLİK: ad, fiyat, görsel ve varyantlar bizim katalogdan geliyor.
+        // YALNIZCA KİMLİK: ad, fiyat, görsel ve varyantlar mağazanın kataloğundan.
         .dotAssistScreen(.product(DotProduct(id: product.id)))
     }
 }

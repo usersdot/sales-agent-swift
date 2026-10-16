@@ -1,6 +1,5 @@
 {
-  "pid": "12345f61a255483d31bc2e4f",
+  "pid": "6a86ff61a255483d31bc2e4f",
   "domain": "www.yatasbedding.com.tr",
-  "mode": "mock",
-  "appTheme": { "launcher": { "scale": 0.85 } }
+  "mode": "mock"
 }

@@ -2,7 +2,8 @@
  * ÖRNEK UYGULAMANIN MOCK SUNUCUSU — http://localhost:4185
  *
  * Simülatörde canlı veriye dokunmadan SDK'yı denemek için:
- *   GET  /widget/index.js           yereldeki widget build'i (`widget/dist/index.js`)
+ *   GET  /widget/index.js           yereldeki widget build'i (`widget/dist/index.js`);
+ *                                   yoksa canlı widget (salt okunur, bu repo tek başına da çalışsın)
  *   GET  /api/widget/:pid/config    canlı API'den SALT OKUNUR (mağazanın origin'iyle)
  *   GET  /api/widget/:pid/product   katalog — `DotAssistExample/yatas-products.json`
  *   diğer /api/widget/...           mock: oturum, olaylar, soru, geçmiş, karşılaştırma…
@@ -13,9 +14,10 @@
  * Canlı sisteme hiçbir yazma gitmiyor: oturum açılmıyor, olay ve soru
  * kaydedilmiyor, dot-sales'e soru gitmiyor. Gelen her istek konsola yazılıyor.
  *
- * Üç SDK reposunun örneğinde de aynı sunucu var (sales-agent-ios, -android,
+ * Üç SDK reposunun örneğinde de aynı sunucu var (sales-agent-swift, -android,
  * -react-native); yalnızca `STORE_FILE` ve `CATALOG` yolları farklı. Widget,
- * repo `dot-identity/widget`'ın yanındaysa oradan; değilse `WIDGET_FILE=...`.
+ * repo `dot-identity/widget`'ın yanındaysa oradan, `WIDGET_FILE=...` verildiyse
+ * o dosyadan, ikisi de yoksa canlıdan (`LIVE_API/widget/index.js`).
  */
 const http = require('http');
 const fs = require('fs');
@@ -117,6 +119,23 @@ async function proxyConfig(req, res, url, s) {
   }
 }
 
+/** Yerel widget build'i yoksa canlı widget — bir kez indirilip bellekte tutuluyor. */
+let liveWidgetJs = null;
+
+async function liveWidget() {
+  if (liveWidgetJs) return liveWidgetJs;
+  try {
+    const r = await fetch(LIVE_API + '/widget/index.js');
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    liveWidgetJs = await r.text();
+    console.log(`${t()}  widget   ← canlı (${LIVE_API}/widget/index.js; yerel build yok: ${WIDGET})`);
+    return liveWidgetJs;
+  } catch (e) {
+    console.log(`${t()}  widget   ✗ yerel build yok (${WIDGET}) ve canlı widget alınamadı: ${e.message}`);
+    return null;
+  }
+}
+
 /**
  * TEST KANALI — simülatöre dokunmadan komut (`npm run cmd -- open`).
  * Uygulama geliştirme modunda `GET /__cmd`'yi saniyede bir okuyor (`App.tsx`).
@@ -146,8 +165,12 @@ const server = http.createServer(async (req, res) => {
     try {
       js = fs.readFileSync(WIDGET, 'utf8');
     } catch (e) {
-      console.log(`${t()}  widget   ✗ ${WIDGET} yok — "cd widget && npm run build:dev"`);
-      return send(res, 404, '/* widget yok */', 'text/javascript');
+      if (process.env.WIDGET_FILE) {
+        console.log(`${t()}  widget   ✗ ${WIDGET} yok`);
+        return send(res, 404, '/* widget yok */', 'text/javascript');
+      }
+      js = await liveWidget();
+      if (!js) return send(res, 502, '/* widget alınamadı */', 'text/javascript');
     }
     if (js.indexOf('__dotApp') === -1) console.log(`${t()}  widget   ⚠ bu build uygulama modunu içermiyor — "cd widget && npm run build:dev"`);
     return send(res, 200, js, 'text/javascript; charset=utf-8');
@@ -211,5 +234,5 @@ server.listen(PORT, () => {
   console.log(`Mock sunucu: http://localhost:${PORT}`);
   console.log(`Mağaza: ${s.domain} · pid ${s.pid}  (dot.config.json)`);
   console.log(`Config: ${LIVE_API} (origin ${s.site}) · katalog: DotAssistExample/yatas-products.json (${CATALOG.length} ürün)`);
-  console.log(`Widget: ${WIDGET}`);
+  console.log(`Widget: ${fs.existsSync(WIDGET) ? WIDGET : WIDGET + ' yok → canlı widget (' + LIVE_API + ')'}`);
 });

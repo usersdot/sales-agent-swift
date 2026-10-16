@@ -4,16 +4,29 @@
 
 SDK, bu reponun kökünden yerel Swift paketi olarak bağlı (`..`). Müşteri uygulamasında tek fark paketin adresi: yerel klasör yerine repo adresi (bkz. kökteki README).
 
+## İki demo
+
+| Şema | Uygulama | Ayar | Ne kullanır |
+|---|---|---|---|
+| `DotAssistExample` | Dot Assist Örnek | `DotAssistExample/dot.config.json` | Yerel mock sunucu ve widget build'i. Canlıya hiçbir şey yazılmaz. UI testleri bununla. |
+| `DotAssistExampleLive` | Dot Assist Canlı | `DotAssistExample/dot.config.live.json` | Canlı widget ve API (`chat.dotassist.ai`). ⚠ Gerçek oturum, olay ve soru yazar. |
+
+İkisi aynı kaynakları kullanıyor (canlı hedef `DOT_LIVE` bayrağıyla derleniyor) ve ayrı paket kimlikleriyle yan yana kurulabiliyor. Ürün ekranı asistana iki demoda da yalnızca ürün kimliğini veriyor; ad, fiyat, görsel ve varyantlar canlıda mağazanın kataloğundan, mock'ta örnekteki ürün dosyasından geliyor.
+
 ## Çalıştırma
 
 ```sh
+# Yerel demo
 npm run mock                  # 1. terminal: mock sunucu, http://localhost:4185 (yalnızca Node, kurulum yok)
-open DotAssistExample.xcodeproj
+open DotAssistExample.xcodeproj   # şema: DotAssistExample
+
+# Canlı demo: mock gerekmez
+open DotAssistExample.xcodeproj   # şema: DotAssistExampleLive
 ```
 
-Mock, widget'ı yereldeki build'den verir: repo `dot-identity/widget`'ın yanındaysa oradan (`../../widget/dist/index.js`), değilse `WIDGET_FILE=/yol/index.js npm run mock`. Config canlı API'den salt okunur alınır; canlı sisteme hiçbir şey yazılmaz.
+Mock, widget'ı yereldeki build'den verir: repo `dot-identity/widget`'ın yanındaysa oradan (`../../widget/dist/index.js`), `WIDGET_FILE=/yol/index.js npm run mock` verilirse o dosyadan, ikisi de yoksa canlı widget'ı indirip verir (repo tek başına klonlandığında da çalışır). Config canlı API'den salt okunur alınır; canlı sisteme hiçbir şey yazılmaz.
 
-Mağaza: `DotAssistExample/dot.config.json` (`pid`, `domain`, `mode`). `mode: "live"` canlı widget ve API'yi kullanır, gerçek oturum ve olay yazar.
+Mağaza: `DotAssistExample/dot.config.json` (yerel; mock da bunu okur) ve `dot.config.live.json` (canlı), alanlar `pid`, `domain`, `mode`.
 
 ## Uçtan uca UI testleri
 

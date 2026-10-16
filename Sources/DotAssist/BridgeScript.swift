@@ -34,8 +34,8 @@
 /// GÜVENLİ ALAN (`safeArea`, sayfa → uygulama): widget açık paneli
 /// `env(safe-area-inset-…)` kadar içeri çekiyor. Android WebView'lar bu değeri
 /// sürüme göre farklı bildiriyor (ör. Chrome 113: üst = durum çubuğu, alt = 0).
-/// Sayfanın gördüğü değer (CSS px) bildiriliyor; Android yalnızca EKSİĞİ
-/// tamamlıyor, iOS ve RN yok sayıyor. Ölçüm `<html>`in padding'i üzerinden:
+/// Sayfanın gördüğü değer (CSS px) bildiriliyor; Android ve RN yalnızca EKSİĞİ
+/// tamamlıyor, iOS yok sayıyor. Ölçüm `<html>`in padding'i üzerinden:
 /// widget `position: fixed` olduğu için etkilenmiyor ve stil widget yüklenmeden
 /// veriliyor (widget'ın rota izleyicisi tetiklenmesin).
 ///

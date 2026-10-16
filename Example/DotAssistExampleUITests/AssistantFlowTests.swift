@@ -66,7 +66,7 @@ final class AssistantFlowTests: XCTestCase {
         wait(app.keyboards.firstMatch, "klavye (asistan penceresi anahtar olabilmeli)", timeout: 5)
         field.typeText("alez önerir misin")
         app.webViews.buttons["Gönder"].tap()
-        wait(web("mock sunucudan"), "cevap", timeout: 15)
+        wait(web("mock sunucudan"), "cevap", timeout: 30) // ilk soru: soğuk WebView + oturum açılışı
 
         app.webViews.links["ürün sayfası"].tap()
         let alert = wait(app.alerts["Bağlantı"], "onOpenUrl uyarısı")

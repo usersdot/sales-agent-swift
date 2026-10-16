@@ -375,9 +375,13 @@ public struct DotLauncher {
 
 /// Boş alanlar gönderilmez; `extra` en altta, tanımlı alanlar onun önüne geçer.
 private func compact(_ extra: [String: Any], _ fields: [String: Any?]) -> [String: Any] {
-    var out = extra
+    // `extra` uygulamadan serbest değer: JSON'a çevrilemeyen (Date, URL, NaN…) atılıyor.
+    var out = extra.filter { JSONSerialization.isValidJSONObject([$0.value]) }
     for (k, v) in fields {
-        if let v { out[k] = v }
+        guard let v else { continue }
+        // NaN / sonsuz JSON'da yok: `JSONSerialization` istisna fırlatırdı.
+        if let d = v as? Double, !d.isFinite { continue }
+        out[k] = v
     }
     return out
 }

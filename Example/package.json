@@ -1,5 +1,5 @@
 {
-  "name": "sales-agent-ios-example-mock",
+  "name": "sales-agent-swift-example-mock",
   "private": true,
   "description": "Örnek uygulamanın mock sunucusu (bağımlılık yok, yalnızca Node)",
   "scripts": {

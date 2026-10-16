@@ -1,21 +1,26 @@
+import DotAssist
 import Foundation
 
-/// Mağaza ayarı: `dot.config.json` (RN örneğindekinin kopyası; mock sunucu oradakini okur).
-///
-/// `mode`:
-/// - `mock` (varsayılan): widget ve API yereldeki mock sunucudan (`Example/` içinde `npm run mock`).
-///   Canlı sisteme hiçbir şey yazılmaz.
-/// - `live`: canlı widget ve API. ⚠ Gerçek oturum, olay ve soru yazar.
+/// Mağaza ayarı. İki uygulama, iki dosya:
+/// - `DotAssistExample` → `dot.config.json` (`mode: mock`): widget ve API yereldeki mock
+///   sunucudan (`Example/` içinde `npm run mock`). Canlı sisteme hiçbir şey yazılmaz.
+/// - `DotAssistExampleLive` (`DOT_LIVE`) → `dot.config.live.json` (`mode: live`): canlı widget
+///   ve API (`chat.dotassist.ai`). ⚠ Gerçek oturum, olay ve soru yazar.
 struct StoreConfig: Decodable {
     let pid: String
     let domain: String
     let mode: String?
 
     static let current: StoreConfig = {
-        guard let url = Bundle.main.url(forResource: "dot.config", withExtension: "json"),
+        #if DOT_LIVE
+        let name = "dot.config.live"
+        #else
+        let name = "dot.config"
+        #endif
+        guard let url = Bundle.main.url(forResource: name, withExtension: "json"),
               let data = try? Data(contentsOf: url),
               let config = try? JSONDecoder().decode(StoreConfig.self, from: data)
-        else { fatalError("dot.config.json okunamadı") }
+        else { fatalError("\(name).json okunamadı") }
         return config
     }()
 
@@ -27,9 +32,9 @@ struct StoreConfig: Decodable {
 
 /// UYGULAMANIN KENDİ KATALOĞU: Yataş Bedding'den iki örnek ürün.
 ///
-/// Uygulama bunları KENDİ ekranlarını çizmek için kullanıyor. Asistana yalnızca
-/// kimliği veriyor (`ProductView`); ad, fiyat, görsel ve varyantları asistan
-/// bizim katalogdan alıyor. Kimlikler web sitesindekiyle aynı (`/tr/frio-p-1556424`).
+/// Uygulama bunları KENDİ ekranlarını çizmek için kullanıyor. Asistana yalnızca kimliği
+/// veriyor (`ProductView`); ad, fiyat, görsel ve varyantları asistan mağazanın web
+/// sitesinden beslenen katalogdan alıyor (mock'ta bu dosyadan). Kimlikler web sitesindekiyle aynı.
 struct Product: Decodable, Identifiable, Hashable {
     struct Variant: Decodable, Hashable {
         let id: String
@@ -42,6 +47,8 @@ struct Product: Decodable, Identifiable, Hashable {
     let brand: String?
     let price: Double?
     let discountedPrice: Double?
+    let currency: String?
+    let url: String?
     let image: String?
     let stock: String?
     let description: String?

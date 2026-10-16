@@ -53,7 +53,9 @@ public final class DotAssist: ObservableObject {
     public var onAddToCart: (@MainActor (DotAddToCartRequest) async throws -> DotHookResult)?
     /// Favori ekle/çıkar. Verilmezse yalnızca analize yazılır.
     public var onFavorite: (@MainActor (DotCardProduct, Bool) async throws -> DotHookResult)?
-    /// Cevap içindeki bağlantı. Verilmezse sistem açar (`UIApplication.open`).
+    /// Cevap içindeki bağlantı. Yalnızca `http`/`https` adresler gelir (`SFSafariViewController`
+    /// ile açılabilir); `mailto:` ve `tel:` sistemle açılır, diğer şemalar (uygulama
+    /// bağlantıları vb.) hiç açılmaz. Verilmezse sistem açar (`UIApplication.open`).
     /// Panel açık kalır: kendi ekranınızı açacaksanız `presenter` üzerinden sunun.
     public var onOpenUrl: (@MainActor (URL) -> Void)?
     public var onStatusChange: (@MainActor (DotStatus) -> Void)?
@@ -103,6 +105,12 @@ public final class DotAssist: ObservableObject {
     private var started = false
     private var attempts = 0
     private var retry: DispatchWorkItem?
+    /// Uygulama ön planda mı: arka planda yeniden deneme yok.
+    private var foreground = true
+    /// Açılış süresinin dolacağı an: arka planda dolduysa ön plana dönünce yeniden yüklenir.
+    private var bootDeadline: Date?
+    /// Son gönderilen durum: aynısı tekrar gönderilmiyor (her `viewDidAppear`'da `setScreen`).
+    private var lastState: NSDictionary?
     /// Hazır değilken gelen açma isteği (`open`, `ask`, `openHistory`): `ready` gelince yapılır.
     private var pending: (method: String, args: [Any])?
     private var observers: [NSObjectProtocol] = []
@@ -111,6 +119,13 @@ public final class DotAssist: ObservableObject {
     private static let bootTimeout: TimeInterval = 20
     /// `error` durumunda yeniden deneme aralıkları; sonuncusu tekrarlanır.
     private static let retryDelays: [TimeInterval] = [3, 10, 30, 60]
+    /// Bu kadar denemeden sonra kendiliğinden deneme durur (yanlış ayarlı mağaza her
+    /// dakika sayfa yüklemesin). Ön plana dönüş ya da `open()` yeniden başlatır.
+    private static let maxAttempts = 6
+    /// Sayfanın bildirdiği launcher kutusu için üst sınırlar (pt): dev bir kutu uygulamanın
+    /// tüm dokunuşlarını almasın.
+    private static let maxLauncher = (width: 480.0, height: 240.0, pad: 48.0)
+    private static let maxQuantity = 999
     /// Bu nedenler kalıcı değil (ağ): `error` + yeniden deneme; diğerleri `unavailable`.
     private static let retryable: Set<String> = ["script", "config_error"]
 
@@ -122,6 +137,8 @@ public final class DotAssist: ObservableObject {
         "test_no_flag": "mağaza \"Test\" modunda, `test: true` verin",
         "host": "`domain` mağaza için izinli değil",
         "disabled": "asistan mağaza için kapalı",
+        "insecure": "yayın derlemesinde http adres (domain / widgetSrc / apiBase) kullanılamaz",
+        "crash": "WebView'ın içerik süreci kapandı; yeniden yükleniyor",
     ]
 
     private init() {}
@@ -140,11 +157,24 @@ public final class DotAssist: ObservableObject {
                     self.load()
                 }
             })
-            // Ön plana dönünce ağ hatası hemen yeniden denensin.
+            // Ön plana dönünce ağ hatası (ya da arka planda dolan açılış süresi) hemen yeniden denensin.
             observers.append(center.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { [weak self] _ in
                 MainActor.assumeIsolated {
-                    guard let self, self.status == .error else { return }
+                    guard let self else { return }
+                    self.foreground = true
+                    let expired = self.status == .loading && (self.bootDeadline.map { $0 < Date() } ?? false)
+                    guard self.started, self.status == .error || expired else { return }
+                    self.attempts = 0
                     self.load()
+                }
+            })
+            // Arka planda yeniden deneme yok.
+            observers.append(center.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] _ in
+                MainActor.assumeIsolated {
+                    guard let self else { return }
+                    self.foreground = false
+                    self.retry?.cancel()
+                    self.retry = nil
                 }
             })
         }
@@ -182,11 +212,13 @@ public final class DotAssist: ObservableObject {
         else { return false }
 
         if host == nil {
-            let web = WebHost(inspectable: options.inspectable)
+            let web = WebHost(origin: origin, inspectable: options.inspectable)
             web.onMessage = { [weak self] in self?.handle($0) }
             web.onLoaded = { [weak self] in self?.sendState() }
             web.onOpenUrl = { [weak self] in self?.openUrl($0) }
-            web.onCrash = { [weak self] in self?.load() }
+            // İçerik süreci kapandı (iOS arka planda sık yapıyor): yükleme beklemeli yeniden
+            // denemeyle, ön plandayken (çök-yükle döngüsü ve arka planda ağ trafiği olmasın).
+            web.onCrash = { [weak self] in self?.fail("crash") }
             host = web
             let c = OverlayController(content: web.webView)
             c.launcher = launcher
@@ -214,15 +246,28 @@ public final class DotAssist: ObservableObject {
         let gen = generation
         retry?.cancel()
         retry = nil
-        statusReason = nil
-        status = .loading
+        lastState = nil
         isOpen = false
         box = nil
+
+        #if !DEBUG
+        // Yayın derlemesinde düz http: ağdaki herkes mağaza origin'ine script sokabilirdi.
+        if origin.hasPrefix("http:") || Self.isHttp(options.widgetSrc) || Self.isHttp(options.apiBase) {
+            print("[dot-assist] " + (Self.reasonHint["insecure"] ?? ""))
+            statusReason = "insecure"
+            status = .unavailable
+            return
+        }
+        #endif
+        statusReason = nil
+        status = .loading
         layout()
 
         // Yalnızca hâlâ yükleniyorsa: `ready` sonrası tetiklenip nedeni `timeout` yazmasın.
+        // Arka planda dolarsa dokunulmuyor: ön plana dönünce yeniden yükleniyor.
+        bootDeadline = Date().addingTimeInterval(Self.bootTimeout)
         DispatchQueue.main.asyncAfter(deadline: .now() + Self.bootTimeout) { [weak self] in
-            guard let self, self.generation == gen, self.status == .loading else { return }
+            guard let self, self.generation == gen, self.status == .loading, self.foreground else { return }
             self.statusReason = "timeout"
             self.status = .error
         }
@@ -248,20 +293,38 @@ public final class DotAssist: ObservableObject {
         }
         #endif
 
-        // AĞ HATASINDA KENDİLİĞİNDEN YENİDEN DENE: artan aralıkla. Mağazada kapalıysa (`unavailable`) denenmiyor.
         retry?.cancel()
         retry = nil
-        if status == .error {
-            let delays = Self.retryDelays
-            let work = DispatchWorkItem { [weak self] in
-                guard let self else { return }
-                self.attempts += 1
-                self.load()
-            }
-            retry = work
-            DispatchQueue.main.asyncAfter(deadline: .now() + delays[min(attempts, delays.count - 1)], execute: work)
-        }
+        if status == .error { scheduleRetry() }
         layout()
+    }
+
+    /// AĞ HATASINDA KENDİLİĞİNDEN YENİDEN DENE: artan aralıkla, yalnızca ön plandayken ve
+    /// `maxAttempts` kez. Mağazada kapalıysa (`unavailable`) denenmiyor.
+    private func scheduleRetry() {
+        retry?.cancel()
+        retry = nil
+        guard foreground, attempts < Self.maxAttempts else { return }
+        let delays = Self.retryDelays
+        let work = DispatchWorkItem { [weak self] in
+            guard let self else { return }
+            self.attempts += 1
+            self.load()
+        }
+        retry = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + delays[min(attempts, delays.count - 1)], execute: work)
+    }
+
+    /// Yükleme bozuldu (içerik süreci kapandı): `error` + yeniden deneme.
+    private func fail(_ reason: String) {
+        generation += 1
+        statusReason = reason
+        isOpen = false
+        if status == .error { scheduleRetry() } else { status = .error }
+    }
+
+    private static func isHttp(_ url: String?) -> Bool {
+        url?.trimmingCharacters(in: .whitespaces).lowercased().hasPrefix("http:") == true
     }
 
     private func openChanged() {
@@ -311,12 +374,16 @@ public final class DotAssist: ObservableObject {
     // MARK: - Uygulama → widget
 
     private func sendState() {
-        host?.send([
+        guard let host else { return }
+        let msg: [String: Any] = [
             "type": "state",
             "state": ScreenState.state(screen, order: order, cart: cart, user: user),
             "user": ScreenState.identity(user) ?? NSNull(),
             "url": ScreenState.url(origin: origin, screen, order: order),
-        ])
+        ]
+        let dict = msg as NSDictionary
+        if let lastState, lastState.isEqual(to: msg) { return }
+        if host.send(msg) { lastState = dict }
     }
 
     private func call(_ method: String, _ args: [Any] = []) {
@@ -419,11 +486,12 @@ public final class DotAssist: ObservableObject {
         case "launcher":
             let w = (data["width"] as? NSNumber)?.doubleValue ?? 0
             let h = (data["height"] as? NSNumber)?.doubleValue ?? 0
-            if w > 0, h > 0 {
+            let max = Self.maxLauncher
+            if w > 0, h > 0, w <= max.width, h <= max.height {
                 box = LauncherBox(
                     width: w,
                     height: h,
-                    pad: (data["pad"] as? NSNumber)?.doubleValue ?? 0,
+                    pad: min(Swift.max((data["pad"] as? NSNumber)?.doubleValue ?? 0, 0), max.pad),
                     left: data["pos"] as? String == "bottom-left"
                 )
                 layout()
@@ -444,11 +512,12 @@ public final class DotAssist: ObservableObject {
                 // Kanca yok → asistan ürün ekranına yönlendiriyor (`productPress`).
                 return reply(id, DotHookResult.failed(navigate: true), navigateOnFail: true)
             }
-            let quantity = (data["quantity"] as? NSNumber)?.intValue ?? 0
+            let q = (data["quantity"] as? NSNumber)?.doubleValue ?? 1
+            let quantity = q.isFinite ? Int(min(Swift.max(q, 1), Double(Self.maxQuantity))) : 1
             let req = DotAddToCartRequest(
                 product: DotCardProduct(json: data["product"] as? [String: Any] ?? [:]),
                 productId: DotCardProduct.string(data["productId"]) ?? "",
-                quantity: quantity > 0 ? quantity : 1
+                quantity: quantity
             )
             respond(id, navigateOnFail: true) { try await hook(req) }
         case "favorite":
@@ -465,9 +534,12 @@ public final class DotAssist: ObservableObject {
 
     /// Kanca cevabını widget'a döndür. Hata fırlatırsa başarısız sayılır.
     private func respond(_ id: Any?, navigateOnFail: Bool, _ run: @escaping @MainActor () async throws -> DotHookResult) {
+        let gen = generation
         Task { @MainActor [weak self] in
             let result = (try? await run()) ?? .failed
-            self?.reply(id, result, navigateOnFail: navigateOnFail)
+            // Bu arada sayfa yeniden yüklendiyse cevap yeni sayfadaki aynı numaralı isteğe gitmesin.
+            guard let self, self.generation == gen else { return }
+            self.reply(id, result, navigateOnFail: navigateOnFail)
         }
     }
 
@@ -482,9 +554,18 @@ public final class DotAssist: ObservableObject {
         host?.send(["type": "result", "id": id ?? NSNull(), "value": value])
     }
 
+    /// Sayfadan gelen adres (cevaptaki bağlantı, ürün adresi). Sayfaya güvenilmiyor: yalnızca
+    /// web, e-posta ve telefon. Uygulama bağlantıları (uygulamanın kendisininkiler de) açılmıyor.
     private func openUrl(_ raw: String) {
-        guard let url = URL(string: raw) else { return }
-        if let handler = onOpenUrl {
+        guard let url = URL(string: raw), let scheme = url.scheme?.lowercased() else { return }
+        let web = (scheme == "http" || scheme == "https") && !(url.host ?? "").isEmpty
+        guard web || scheme == "mailto" || scheme == "tel" else {
+            #if DEBUG
+            print("[dot-assist] açılmayan bağlantı şeması: \(scheme)")
+            #endif
+            return
+        }
+        if web, let handler = onOpenUrl {
             handler(url)
         } else {
             UIApplication.shared.open(url)

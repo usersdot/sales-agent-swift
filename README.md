@@ -54,17 +54,18 @@ Usersdot ekibinden iki bilgi alın:
 Swift Package Manager ile:
 
 1. Xcode'da **File → Add Package Dependencies…**
-2. Usersdot ekibinin verdiği paket adresini yazın.
+2. Paket adresini yazın: `https://github.com/usersdot/sales-agent-swift`
+   Sürüm kuralı: **Up to Next Major Version**, `0.1.0`.
 3. **DotAssist** kütüphanesini uygulama hedefinize ekleyin.
 
 `Package.swift` kullanıyorsanız:
 
 ```swift
 dependencies: [
-    .package(url: "<Usersdot'un verdiği paket adresi>", from: "0.1.0"),
+    .package(url: "https://github.com/usersdot/sales-agent-swift", from: "0.1.0"),
 ],
 targets: [
-    .target(name: "Uygulamam", dependencies: [.product(name: "DotAssist", package: "DotAssist")]),
+    .target(name: "Uygulamam", dependencies: [.product(name: "DotAssist", package: "sales-agent-swift")]),
 ]
 ```
 
@@ -224,7 +225,7 @@ dot.onFavorite = { product, on in
 
 ### Cevaplardaki bağlantılar (isteğe bağlı)
 
-Asistanın cevabındaki bir bağlantıya dokunulduğunda varsayılan olarak tarayıcı açılır. Bağlantıyı uygulamanızda açmak isterseniz:
+Asistanın cevabındaki bir bağlantıya dokunulduğunda varsayılan olarak tarayıcı açılır. Bağlantıyı uygulamanızda açmak isterseniz aşağıdaki gibi yapın. Buraya yalnızca `http`/`https` adresler gelir. E-posta (`mailto:`) ve telefon (`tel:`) bağlantılarını sistem açar. Başka uygulamaları açan bağlantılar güvenlik için hiç açılmaz.
 
 ```swift
 dot.onOpenUrl = { url in
@@ -450,7 +451,7 @@ Kontrol listesi:
 | `onProductPress` | Asistandaki ürüne dokunuldu. |
 | `onAddToCart` | Asistandan sepete ekle. `.ok` / `.failed` döndürün. |
 | `onFavorite` | Kalp düğmesi. |
-| `onOpenUrl` | Cevaptaki bağlantı. |
+| `onOpenUrl` | Cevaptaki bağlantı (yalnızca `http`/`https`). |
 | `onOpen` / `onClose` | Asistan açıldı / kapandı. |
 | `onStatusChange` | Asistanın durumu değişti. |
 
@@ -463,3 +464,5 @@ Ekran türleri: `.home`, `.product`, `.category`, `.search`, `.cart`, `.account`
 ---
 
 **Yardım:** Kurulumda takıldığınız bir yer olursa Usersdot ekibine yazın.
+
+**Lisans:** Apache-2.0 ([LICENSE](LICENSE)).

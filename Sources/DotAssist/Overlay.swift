@@ -31,6 +31,7 @@ final class OverlayWindow: UIWindow {
     override var canBecomeKey: Bool { allowsKey }
 
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        if let c = rootViewController as? OverlayController, !c.acceptsTouch(at: convert(point, to: c.view)) { return nil }
         let hit = super.hitTest(point, with: event)
         return hit === rootViewController?.view ? nil : hit
     }
@@ -75,6 +76,13 @@ final class OverlayController: UIViewController {
         container.addSubview(content)
         root.addSubview(container)
         view = root
+    }
+
+    /// Launcher kutusu, düğmenin gölgesi için her yanda `pad` kadar geniş: o şeffaf
+    /// kenara düşen dokunuş alttaki uygulamaya geçiyor.
+    func acceptsTouch(at point: CGPoint) -> Bool {
+        guard case let .launcher(box) = mode, presentedViewController == nil else { return true }
+        return container.frame.insetBy(dx: box.pad, dy: box.pad).contains(point)
     }
 
     override func viewDidLayoutSubviews() {
