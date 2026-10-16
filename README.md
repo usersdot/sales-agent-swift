@@ -16,6 +16,39 @@ SwiftUI ve UIKit uygulamalarında çalışır.
 
 ---
 
+## Hızlı bakış
+
+Kurulumun tamamı. Her adımın ayrıntısı aşağıdaki bölümlerde.
+
+```swift
+import DotAssist
+
+// 1. Uygulama açılırken bir kez (SwiftUI `App.init` ya da `didFinishLaunching`)
+DotAssist.configure(DotAssistOptions(pid: "SIZE_VERILEN_PID", domain: "www.magaza.com"))
+
+// 2. Asistanı uygulamanıza bağlayın (bir kez)
+let dot = DotAssist.shared
+dot.onProductPress = { product in
+    router.openProduct(id: product.id)            // asistandaki ürüne dokunuldu
+}
+dot.onAddToCart = { request in
+    try await cart.add(request.productId, quantity: request.quantity)
+    return .ok                                    // eklenemezse .failed
+}
+
+// 3. Ürün ekranında: yalnızca ürün kimliği
+ProductView(product)
+    .dotAssistScreen(.product(DotProduct(id: product.id)))
+
+// 4. Sepet ve sipariş
+dot.setCart(DotCart(total: 2399.8, itemCount: 2, currency: "TRY"))
+dot.trackOrder(DotOrder(orderId: "S-10023", total: 2399.8, currency: "TRY"))
+```
+
+Sağ alttaki asistan düğmesi kendiliğinden gelir. Tüm metotlar ve tipler: [Bölüm 12](#12-api-başvurusu).
+
+---
+
 ## İçindekiler
 
 1. [Başlamadan önce](#1-başlamadan-önce)
@@ -29,7 +62,7 @@ SwiftUI ve UIKit uygulamalarında çalışır.
 9. [Giriş yapmış üye (isteğe bağlı)](#9-giriş-yapmış-üye-isteğe-bağlı)
 10. [Test etme](#10-test-etme)
 11. [Sorun giderme](#11-sorun-giderme)
-12. [Başvuru: tüm seçenekler](#12-başvuru-tüm-seçenekler)
+12. [API başvurusu](#12-api-başvurusu)
 
 ---
 
@@ -416,50 +449,162 @@ Kontrol listesi:
 
 ---
 
-## 12. Başvuru: tüm seçenekler
+## 12. API başvurusu
 
-### `DotAssistOptions`
+Her şey `import DotAssist` ile gelir. `DotAssist` ana iş parçacığında çalışır (`@MainActor`): çağrıları ve kancaları ana iş parçacığından kullanın.
 
-| Alan | Zorunlu | Açıklama |
-|---|---|---|
-| `pid` | ✔ | Size verilen mağaza kimliği. |
-| `domain` | ✔ | Web sitenizin alan adı, örn. `www.magaza.com`. |
-| `test` | | Test modu ([Bölüm 10](#10-test-etme)). |
-| `locale` | | Arayüz dili, varsayılan `tr`. |
-| `backgroundColor` | | Asistan açılırken görünen zemin rengi, varsayılan `#ffffff`. |
-| `inspectable` | | Safari Web Inspector ile incelenebilir (iOS 16.4+). Yalnızca geliştirmede açın. |
-
-### `DotAssist.shared`
+### Kurulum
 
 | | |
 |---|---|
-| `status` | `.loading` (yükleniyor), `.ready` (hazır), `.unavailable` (mağaza için kapalı), `.error` (yüklenemedi, yeniden denenir) |
-| `statusReason` | Durumun nedeni ([Bölüm 11](#11-sorun-giderme)) |
-| `isOpen` | Asistan açık mı |
-| `theme` | Paneldeki marka rengi (`primary`, `primaryColor`) ve düğme yazısı (`label`) |
-| `open()` / `close()` / `toggle()` | Asistanı aç / kapat |
-| `ask(_:)` | Asistanı açıp soruyu gönderir |
-| `openHistory()` | Geçmiş sohbetler |
-| `newChat()` | Yeni sohbet |
-| `setScreen(_:url:title:)` | Ekranı bildir |
-| `setCart(_:)` | Sepet özeti |
-| `trackOrder(_:)` | Sipariş tamamlandı |
-| `user` | Giriş yapmış üye ([Bölüm 9](#9-giriş-yapmış-üye-isteğe-bağlı)) |
-| `launcher` | Düğme konumu ya da `.hidden` ([Bölüm 8](#8-asistan-düğmesi)) |
-| `presenter` | Asistanın üstünde ekran sunmak için ([Bölüm 5](#cevaplardaki-bağlantılar-isteğe-bağlı)) |
-| `attach(to:)` | Birden fazla pencereli (iPad) uygulamalarda asistanın görüneceği sahne |
-| `onProductPress` | Asistandaki ürüne dokunuldu. |
-| `onAddToCart` | Asistandan sepete ekle. `.ok` / `.failed` döndürün. |
-| `onFavorite` | Kalp düğmesi. |
-| `onOpenUrl` | Cevaptaki bağlantı (yalnızca `http`/`https`). |
-| `onOpen` / `onClose` | Asistan açıldı / kapandı. |
-| `onStatusChange` | Asistanın durumu değişti. |
+| `DotAssist.configure(_ options: DotAssistOptions)` | Uygulama açılırken bir kez. Asistan, ilk sahne etkinleşince yüklenir. |
+| `DotAssist.shared` | Asistanın tek örneği. Aşağıdaki her şey bunun üzerinde. |
+| `attach(to scene: UIWindowScene)` | Birden fazla pencereli (iPad) uygulamalarda asistanın görüneceği sahne. Verilmezse ilk etkin sahne. |
 
-`status`, `isOpen` ve `theme` SwiftUI'da `@ObservedObject var dot = DotAssist.shared` ile izlenebilir.
+### `DotAssistOptions`
 
-### `.dotAssistScreen(_:url:title:)`
+| Alan | Tip | Varsayılan | Açıklama |
+|---|---|---|---|
+| `pid` | `String` | **zorunlu** | Size verilen mağaza kimliği. |
+| `domain` | `String` | **zorunlu** | Web sitenizin alan adı, örn. `www.magaza.com`. |
+| `test` | `Bool` | `false` | Test modu ([Bölüm 10](#10-test-etme)). |
+| `locale` | `String` | `"tr"` | Arayüz dili. |
+| `backgroundColor` | `String` | `"#ffffff"` | Asistan açılırken görünen zemin rengi. |
+| `inspectable` | `Bool` | `false` | Safari Web Inspector ile incelenebilir (iOS 16.4+, yalnızca `DEBUG` derlemede). |
 
-Ekran türleri: `.home`, `.product`, `.category`, `.search`, `.cart`, `.account`, `.other(name:)` ([Bölüm 4](#4-ürün-ekranını-bildirin) ve [Bölüm 7](#7-diğer-ekranlar-isteğe-bağlı)).
+### Metotlar
+
+| Metot | Ne yapar |
+|---|---|
+| `open()` | Asistanı açar. Henüz hazır değilse hazır olunca açar; mağazada kapalıysa (`unavailable`) bir şey olmaz. |
+| `close()` | Asistanı kapatır. |
+| `toggle()` | Açıksa kapatır, kapalıysa açar. |
+| `ask(_ question: String)` | Asistanı açar ve soruyu gönderir. |
+| `openHistory()` | Asistanı geçmiş sohbetlerle açar. |
+| `newChat()` | Yeni bir sohbet başlatır. |
+| `setScreen(_ screen: DotScreen, url: String? = nil, title: String? = nil)` | Kullanıcının bulunduğu ekranı bildirir. `url`: ekranın web sitesindeki karşılığı (isteğe bağlı). |
+| `setCart(_ cart: DotCart?)` | Sepet özetini bildirir. Sepet boşalınca `nil` ya da sıfır değerler. |
+| `trackOrder(_ order: DotOrder)` | Sipariş tamamlandı. Sipariş başına bir kez. |
+
+SwiftUI'da `setScreen` yerine: `.dotAssistScreen(_ screen: DotScreen, url: String? = nil, title: String? = nil)`. Ekran her göründüğünde ve içeriği değiştiğinde yeniden bildirir.
+
+### Durum
+
+Salt okunur. SwiftUI'da `@ObservedObject private var dot = DotAssist.shared` ile izlenir.
+
+| Özellik | Tip | Açıklama |
+|---|---|---|
+| `status` | `DotStatus` | `.loading`, `.ready`, `.unavailable`, `.error` |
+| `statusReason` | `String?` | `ready` değilken nedeni ([Bölüm 11](#11-sorun-giderme)) |
+| `isOpen` | `Bool` | Asistan açık mı |
+| `theme` | `DotTheme?` | Paneldeki marka rengi ve düğme yazısı (`ready` olunca) |
+| `presenter` | `UIViewController?` | Asistanın üstünde ekran sunmak için ([Bölüm 5](#cevaplardaki-bağlantılar-isteğe-bağlı)) |
+
+### Ayarlar
+
+| Özellik | Tip | Açıklama |
+|---|---|---|
+| `user` | `DotUser?` | Giriş yapmış üye; çıkışta `nil` ([Bölüm 9](#9-giriş-yapmış-üye-isteğe-bağlı)) |
+| `launcher` | `DotLauncher` | Düğmenin konumu ya da `.hidden` ([Bölüm 8](#8-asistan-düğmesi)) |
+
+### Kancalar
+
+Hepsi isteğe bağlı ve ana iş parçacığında çağrılır.
+
+| Kanca | Tip | Ne zaman |
+|---|---|---|
+| `onProductPress` | `(DotCardProduct) -> Void` | Asistandaki ürüne dokunuldu. Asistan önce kendini kapatır. Verilmezse ürün tarayıcıda açılır. |
+| `onAddToCart` | `(DotAddToCartRequest) async throws -> DotHookResult` | Asistandan "Sepete ekle". Verilmezse kullanıcı ürün ekranına yönlendirilir. Hata fırlatmak `.failed` sayılır. |
+| `onFavorite` | `(DotCardProduct, Bool) async throws -> DotHookResult` | Kalp düğmesi. `Bool`: `true` eklendi, `false` çıkarıldı. |
+| `onOpenUrl` | `(URL) -> Void` | Cevaptaki `http`/`https` bağlantı. Verilmezse sistem açar. |
+| `onStatusChange` | `(DotStatus) -> Void` | Durum değişti. |
+| `onOpen` / `onClose` | `() -> Void` | Asistan açıldı / kapandı. |
+
+### Tipler
+
+**`DotScreen`**: kullanıcının bulunduğu ekran.
+
+| Değer | Ne zaman |
+|---|---|
+| `.home` | Ana sayfa |
+| `.product(DotProduct)` | Ürün ekranı |
+| `.category(DotCategory)` | Kategori / liste ekranı |
+| `.search(DotSearch)` | Arama sonuçları |
+| `.cart` | Sepet |
+| `.account` | Hesabım |
+| `.other(name: String?)` | Diğer, örn. `.other(name: "kampanyalar")` |
+
+**`DotProduct`**: asistana verdiğiniz ürün. Yalnızca `id` zorunlu; diğerleri yalnızca ürün web sitenizde yoksa gerekir ([Bölüm 4](#4-ürün-ekranını-bildirin)).
+
+| Alan | Tip | Açıklama |
+|---|---|---|
+| `id` | `String` | **Zorunlu.** Web sitenizdeki ürün kimliği. |
+| `mainProductId` | `String?` | Varyantları gruplayan ana ürün kimliği. |
+| `name`, `brand`, `sku` | `String?` | |
+| `price` | `Double?` | Liste (üstü çizili) fiyat. |
+| `discountedPrice` | `Double?` | İndirimli fiyat. İndirim yoksa vermeyin. |
+| `currency` | `String?` | 3 harf, örn. `"TRY"`. |
+| `url`, `image` | `String?` | Web sitesindeki ürün adresi ve görseli. |
+| `stock` | `DotStock?` | `.inStock`, `.outOfStock`, `.preorder` |
+| `categories` | `[String]?` | Genelden özele: `["Ev", "Yatak Odası", "Alez"]`. |
+| `description` | `String?` | |
+| `attributes` | `[String: String]?` | Bu ürünün özellikleri: `["Renk": "Beyaz", "Ölçü": "160x200"]`. |
+| `extra` | `[String: Any]` | Ek alanlar, olduğu gibi gönderilir. |
+
+**`DotCategory`**
+
+| Alan | Tip | Açıklama |
+|---|---|---|
+| `categoryRef` | `String` | **Zorunlu.** Kategori kimliği ya da yolu. |
+| `name`, `url`, `path` | `String?` | |
+| `items` | `[DotCategoryItem]?` | Listedeki ürünler, sırasıyla: `DotCategoryItem(id:position:page:)`. |
+| `itemCount` | `Int?` | Toplam ürün sayısı. |
+| `sort` | `String?` | Sıralama, örn. `"price_asc"`. |
+| `extra` | `[String: Any]` | Ek alanlar. |
+
+**`DotSearch`**: `query: String` (**zorunlu**), `resultCount: Int?`, `extra: [String: Any]`.
+
+**`DotCart`**: `total: Double?`, `itemCount: Int?`, `currency: String?`.
+
+**`DotOrder`**
+
+| Alan | Tip | Açıklama |
+|---|---|---|
+| `orderId` | `String` | **Zorunlu.** Aynı sipariş bir kez sayılır. |
+| `total` | `Double?` | |
+| `currency` | `String?` | |
+| `itemCount` | `Int?` | |
+| `productIds` | `[String]?` | Siparişteki ürünlerin kimlikleri. |
+| `coupon` | `String?` | |
+
+**`DotUser`**: `ref: String`, `exp: Int` (Unix saniye), `sig: String`, `profile: DotUserProfile?`. `DotUserProfile`: `name`, `surname`, `email`, `phone` (hepsi `String?`). Bkz. [Bölüm 9](#9-giriş-yapmış-üye-isteğe-bağlı).
+
+**`DotCardProduct`**: asistanın kancalara verdiği ürün. Tüm alanlar isteğe bağlı.
+
+| Alan | Tip | Açıklama |
+|---|---|---|
+| `id` | `String?` | Ürün kimliği (web sitenizdeki). |
+| `mainProductId`, `sku`, `name`, `brand` | `String?` | |
+| `price`, `discountedPrice` | `Double?` | |
+| `currency`, `url`, `image` | `String?` | |
+| `messageRef` | `String?` | Önerinin geldiği sohbet mesajı. |
+| `raw` | `[String: Any]` | Asistanın gönderdiği alanların tamamı. |
+
+**`DotAddToCartRequest`**: `product: DotCardProduct`, `productId: String` (seçilen beden/rengin kodu; sepete bunu ekleyin), `quantity: Int` (1–999).
+
+**`DotHookResult`**: `onAddToCart` ve `onFavorite`'in cevabı.
+
+| Değer | Anlamı |
+|---|---|
+| `.ok` | Başarılı. Asistan "Sepete eklendi" der. |
+| `.failed` | Başarısız. Sepette asistan kullanıcıyı ürün ekranına yönlendirir (`onProductPress`). |
+| `.failed(navigate: false)` | Başarısız, yönlendirme yok. |
+
+**`DotLauncher`**: `visible: Bool = true`, `bottom: Double = 24` (alt güvenli alanın üstündeki boşluk, pt), `side: Double = 16` (yan kenardan, pt). Gizlemek için `.hidden`.
+
+**`DotTheme`**: `primary: String?` (marka rengi, `#RRGGBB`), `primaryColor: UIColor?` (aynı renk), `label: String?` (düğme yazısı).
+
+**`DotStatus`**: `.loading`, `.ready`, `.unavailable`, `.error`. Nedenleri [Bölüm 11](#11-sorun-giderme)'de.
 
 ---
 
