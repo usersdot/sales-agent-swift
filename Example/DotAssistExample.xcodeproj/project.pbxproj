@@ -7,28 +7,46 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D0A5500000000000000000D1 /* DotAssist in Frameworks */ = {isa = PBXBuildFile; productRef = D0A5500000000000000000D2 /* DotAssist */; };
 		D0A5500000000000000000A1 /* DotAssist in Frameworks */ = {isa = PBXBuildFile; productRef = D0A5500000000000000000A2 /* DotAssist */; };
+		D0A5500000000000000000D1 /* DotAssist in Frameworks */ = {isa = PBXBuildFile; productRef = D0A5500000000000000000D2 /* DotAssist */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		D0A5500000000000000000C9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D0A5500000000000000000AD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D0A5500000000000000000A9;
+			remoteInfo = DotAssistExample;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
-		D0A5500000000000000000D3 /* DotAssistExampleLive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DotAssistExampleLive.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D0A5500000000000000000C1 /* DotAssistExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DotAssistExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0A5500000000000000000A3 /* DotAssistExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DotAssistExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0A5500000000000000000A4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D0A5500000000000000000C1 /* DotAssistExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DotAssistExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0A5500000000000000000D3 /* DotAssistExampleLive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DotAssistExampleLive.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		D0A5500000000000000000C2 /* DotAssistExampleUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; path = DotAssistExampleUITests; sourceTree = "<group>"; };
-		D0A5500000000000000000A5 /* DotAssistExample */ = {isa = PBXFileSystemSynchronizedRootGroup; path = DotAssistExample; sourceTree = "<group>"; };
+		D0A5500000000000000000A5 /* DotAssistExample */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = DotAssistExample;
+			sourceTree = "<group>";
+		};
+		D0A5500000000000000000C2 /* DotAssistExampleUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = DotAssistExampleUITests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		D0A5500000000000000000D6 /* Frameworks */ = {
+		D0A5500000000000000000A6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0A5500000000000000000D1 /* DotAssist in Frameworks */,
+				D0A5500000000000000000A1 /* DotAssist in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -39,11 +57,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D0A5500000000000000000A6 /* Frameworks */ = {
+		D0A5500000000000000000D6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0A5500000000000000000A1 /* DotAssist in Frameworks */,
+				D0A5500000000000000000D1 /* DotAssist in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,50 +91,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D0A5500000000000000000D9 /* DotAssistExampleLive */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = D0A5500000000000000000DA /* Build configuration list for PBXNativeTarget "DotAssistExampleLive" */;
-			buildPhases = (
-				D0A5500000000000000000D7 /* Sources */,
-				D0A5500000000000000000D6 /* Frameworks */,
-				D0A5500000000000000000D8 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				D0A5500000000000000000A5 /* DotAssistExample */,
-			);
-			name = DotAssistExampleLive;
-			packageProductDependencies = (
-				D0A5500000000000000000D2 /* DotAssist */,
-			);
-			productName = DotAssistExampleLive;
-			productReference = D0A5500000000000000000D3 /* DotAssistExampleLive.app */;
-			productType = "com.apple.product-type.application";
-		};
-		D0A5500000000000000000C4 /* DotAssistExampleUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = D0A5500000000000000000C5 /* Build configuration list for PBXNativeTarget "DotAssistExampleUITests" */;
-			buildPhases = (
-				D0A5500000000000000000C6 /* Sources */,
-				D0A5500000000000000000C3 /* Frameworks */,
-				D0A5500000000000000000C7 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				D0A5500000000000000000C8 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				D0A5500000000000000000C2 /* DotAssistExampleUITests */,
-			);
-			name = DotAssistExampleUITests;
-			productName = DotAssistExampleUITests;
-			productReference = D0A5500000000000000000C1 /* DotAssistExampleUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 		D0A5500000000000000000A9 /* DotAssistExample */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D0A5500000000000000000AA /* Build configuration list for PBXNativeTarget "DotAssistExample" */;
@@ -140,6 +114,50 @@
 			productReference = D0A5500000000000000000A3 /* DotAssistExample.app */;
 			productType = "com.apple.product-type.application";
 		};
+		D0A5500000000000000000C4 /* DotAssistExampleUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D0A5500000000000000000C5 /* Build configuration list for PBXNativeTarget "DotAssistExampleUITests" */;
+			buildPhases = (
+				D0A5500000000000000000C6 /* Sources */,
+				D0A5500000000000000000C3 /* Frameworks */,
+				D0A5500000000000000000C7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D0A5500000000000000000C8 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				D0A5500000000000000000C2 /* DotAssistExampleUITests */,
+			);
+			name = DotAssistExampleUITests;
+			productName = DotAssistExampleUITests;
+			productReference = D0A5500000000000000000C1 /* DotAssistExampleUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		D0A5500000000000000000D9 /* DotAssistExampleLive */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D0A5500000000000000000DA /* Build configuration list for PBXNativeTarget "DotAssistExampleLive" */;
+			buildPhases = (
+				D0A5500000000000000000D7 /* Sources */,
+				D0A5500000000000000000D6 /* Frameworks */,
+				D0A5500000000000000000D8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				D0A5500000000000000000A5 /* DotAssistExample */,
+			);
+			name = DotAssistExampleLive;
+			packageProductDependencies = (
+				D0A5500000000000000000D2 /* DotAssist */,
+			);
+			productName = DotAssistExampleLive;
+			productReference = D0A5500000000000000000D3 /* DotAssistExampleLive.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -153,12 +171,12 @@
 					D0A5500000000000000000A9 = {
 						CreatedOnToolsVersion = 16.2;
 					};
-					D0A5500000000000000000D9 = {
-						CreatedOnToolsVersion = 16.2;
-					};
 					D0A5500000000000000000C4 = {
 						CreatedOnToolsVersion = 16.2;
 						TestTargetID = D0A5500000000000000000A9;
+					};
+					D0A5500000000000000000D9 = {
+						CreatedOnToolsVersion = 16.2;
 					};
 				};
 			};
@@ -186,26 +204,8 @@
 		};
 /* End PBXProject section */
 
-/* Begin PBXContainerItemProxy section */
-		D0A5500000000000000000C9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D0A5500000000000000000AD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D0A5500000000000000000A9;
-			remoteInfo = DotAssistExample;
-		};
-/* End PBXContainerItemProxy section */
-
-/* Begin PBXTargetDependency section */
-		D0A5500000000000000000C8 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D0A5500000000000000000A9 /* DotAssistExample */;
-			targetProxy = D0A5500000000000000000C9 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin PBXResourcesBuildPhase section */
-		D0A5500000000000000000D8 /* Resources */ = {
+		D0A5500000000000000000AC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -219,7 +219,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D0A5500000000000000000AC /* Resources */ = {
+		D0A5500000000000000000D8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -229,7 +229,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		D0A5500000000000000000D7 /* Sources */ = {
+		D0A5500000000000000000AB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -243,7 +243,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D0A5500000000000000000AB /* Sources */ = {
+		D0A5500000000000000000D7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -252,91 +252,15 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		D0A5500000000000000000C8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D0A5500000000000000000A9 /* DotAssistExample */;
+			targetProxy = D0A5500000000000000000C9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
-		D0A5500000000000000000DB /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Dot Assist Canlı";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ai.dotassist.example.live;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DOT_LIVE $(inherited)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
-			};
-			name = Debug;
-		};
-		D0A5500000000000000000DC /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Dot Assist Canlı";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ai.dotassist.example.live;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DOT_LIVE $(inherited)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
-			};
-			name = Release;
-		};
-		D0A5500000000000000000CA /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ai.dotassist.example.uitests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
-				TEST_TARGET_NAME = DotAssistExample;
-			};
-			name = Debug;
-		};
-		D0A5500000000000000000CB /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ai.dotassist.example.uitests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
-				TEST_TARGET_NAME = DotAssistExample;
-			};
-			name = Release;
-		};
 		D0A5500000000000000000B1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -432,27 +356,93 @@
 			};
 			name = Release;
 		};
+		D0A5500000000000000000CA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.dotassist.example.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = DotAssistExample;
+			};
+			name = Debug;
+		};
+		D0A5500000000000000000CB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.dotassist.example.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = DotAssistExample;
+			};
+			name = Release;
+		};
+		D0A5500000000000000000DB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Dot Assist Canlı";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.dotassist.example.live;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DOT_LIVE $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		D0A5500000000000000000DC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Dot Assist Canlı";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.dotassist.example.live;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DOT_LIVE $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D0A5500000000000000000DA /* Build configuration list for PBXNativeTarget "DotAssistExampleLive" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D0A5500000000000000000DB /* Debug */,
-				D0A5500000000000000000DC /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		D0A5500000000000000000C5 /* Build configuration list for PBXNativeTarget "DotAssistExampleUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D0A5500000000000000000CA /* Debug */,
-				D0A5500000000000000000CB /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		D0A5500000000000000000AA /* Build configuration list for PBXNativeTarget "DotAssistExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -471,6 +461,24 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		D0A5500000000000000000C5 /* Build configuration list for PBXNativeTarget "DotAssistExampleUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D0A5500000000000000000CA /* Debug */,
+				D0A5500000000000000000CB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D0A5500000000000000000DA /* Build configuration list for PBXNativeTarget "DotAssistExampleLive" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D0A5500000000000000000DB /* Debug */,
+				D0A5500000000000000000DC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
@@ -481,11 +489,11 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		D0A5500000000000000000D2 /* DotAssist */ = {
+		D0A5500000000000000000A2 /* DotAssist */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DotAssist;
 		};
-		D0A5500000000000000000A2 /* DotAssist */ = {
+		D0A5500000000000000000D2 /* DotAssist */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DotAssist;
 		};
